@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    黑马头条哦
-    <el-button type="info">信息按钮</el-button>
+    <!-- 一级路由 -->
+    <router-view></router-view>
   </div>
 </template>
 
