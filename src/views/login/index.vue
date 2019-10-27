@@ -8,14 +8,14 @@
       <!-- el-form 表单容器 -->
       <!-- ref="form" ref作用获取被标记的 dom元素|组件实例  -->
       <!-- :model="form" 属性绑定 表单的数据对象-->
-      <el-form :model="LoginFrom">
-        <el-form-item>
+      <el-form :model="LoginForm" :rules="loginRules" ref="loginForm">
+        <el-form-item prop="mobile">
           <!-- 表单元素 -->
-          <el-input v-model="LoginFrom.mobile" placeholder="请输入手机号"></el-input>
+          <el-input v-model="LoginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input
-            v-model="LoginFrom.code"
+            v-model="LoginForm.code"
             placeholder="请输入验证码"
             style="width:240px;margin-right:8px;"
           ></el-input>
@@ -25,7 +25,7 @@
           <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width:100%;">登录</el-button>
+          <el-button type="primary" @click="login" style="width:100%;">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -35,11 +35,55 @@
 <script>
 export default {
   data () {
-    return {
-      LoginFrom: {
-        modlie: '',
-        code: ''
+    // 校验手机号函数
+    const checkMobile = (rule, value, callback) => {
+      // 去判断value是否符合手机号格式
+      // 格式：1开头  第二位 3-9 之间  9位数字结尾
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('手机号格式不对'))
       }
+    }
+
+    return {
+      LoginForm: {
+        mobile: '',
+        code: ''
+      },
+      loginRules: {
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { len: 6, message: '验证码为6位', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    login () {
+      // 对整个表单进行校验
+      this.$refs['loginForm'].validate(valid => {
+        if (valid) {
+          // 校验成功  进行登录（发请求）
+          // console.log('ok')
+          // post(url,参数对象) post传参
+          // get(url?a=b&c=d)  get传参数 2 grt(url,{parms:参数对象})
+          this.$http
+            .post('authorizations', this.loginForm)
+            .then(res => {
+              // 成功以后跳转
+              this.$router.push('/')
+            })
+            .catch(() => {
+              // 失败了提示
+              this.$message.error('手机号或验证码错误')
+            })
+        }
+      })
     }
   }
 }
