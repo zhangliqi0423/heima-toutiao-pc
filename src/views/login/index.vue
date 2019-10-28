@@ -8,14 +8,14 @@
       <!-- el-form 表单容器 -->
       <!-- ref="form" ref作用获取被标记的 dom元素|组件实例  -->
       <!-- :model="form" 属性绑定 表单的数据对象-->
-      <el-form :model="LoginForm" :rules="loginRules" ref="loginForm">
+      <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
         <el-form-item prop="mobile">
           <!-- 表单元素 -->
-          <el-input v-model="LoginForm.mobile" placeholder="请输入手机号"></el-input>
+          <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-input
-            v-model="LoginForm.code"
+            v-model="loginForm.code"
             placeholder="请输入验证码"
             style="width:240px;margin-right:8px;"
           ></el-input>
@@ -47,9 +47,9 @@ export default {
     }
 
     return {
-      LoginForm: {
-        mobile: '',
-        code: ''
+      loginForm: {
+        mobile: '13613613666',
+        code: '246810'
       },
       loginRules: {
         mobile: [
@@ -76,6 +76,8 @@ export default {
             .post('authorizations', this.loginForm)
             .then(res => {
               // 成功以后跳转
+              // 保存用户信息
+
               this.$router.push('/')
             })
             .catch(() => {
