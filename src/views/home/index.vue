@@ -52,13 +52,13 @@
         <!-- 下拉菜单组件 -->
         <el-dropdown class="dropdown">
           <span class="el-dropdown-link">
-            <img class="headIocn" src="../../assets/img/avatar.jpg" alt />
-            <span class="name">用户名</span>
+            <img class="headIocn" :src="photo" alt />
+            <span class="name">{{name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click.native="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock"  @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -71,15 +71,34 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
-      isOpen: true
+      // 是不是展开的
+      isOpen: true,
+      // 头像
+      photo: '',
+      // 名称
+      name: ''
     }
+  },
+  created () {
+    const user = local.getUser() || {}
+    this.photo = user.photo
+    this.name = user.name
   },
   methods: {
     toggleMenu () {
+      // 切换侧边栏展开与收起
       this.isOpen = !this.isOpen
+    },
+    setting () {
+      this.$router.push('/settiing')
+    },
+    logout () {
+      local.delUser()
+      this.$router.push('/login')
     }
   }
 }

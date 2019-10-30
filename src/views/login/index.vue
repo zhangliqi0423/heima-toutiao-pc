@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     // 校验手机号函数
@@ -66,24 +67,35 @@ export default {
   methods: {
     login () {
       // 对整个表单进行校验
-      this.$refs['loginForm'].validate(valid => {
+      this.$refs['loginForm'].validate(async valid => {
         if (valid) {
           // 校验成功  进行登录（发请求）
           // console.log('ok')
           // post(url,参数对象) post传参
           // get(url?a=b&c=d)  get传参数 2 grt(url,{parms:参数对象})
-          this.$http
-            .post('authorizations', this.loginForm)
-            .then(res => {
-              // 成功以后跳转
-              // 保存用户信息
+          // this.$http
+          //   .post('authorizations', this.loginForm)
+          //   .then(res => {
+          //   // 成功以后跳转
+          //   // 成功 res 是响应对象  res.data 是响应主体
+          //   // 保存用户信息
+          //     local.setUser(res.data.data)
+          //     this.$router.push('/')
+          //   })
+          //   .catch(() => {
+          //   // 失败了提示
+          //     this.$message.error('手机号或验证码错误')
+          //   })
 
-              this.$router.push('/')
-            })
-            .catch(() => {
-              // 失败了提示
-              this.$message.error('手机号或验证码错误')
-            })
+          try {
+            const {
+              data: { data }
+            } = await this.$http.post('authorizations', this.loginForm)
+            local.setUser(data)
+            this.$router.push('/')
+          } catch (e) {
+            this.$message.error('手机号或验证码错误')
+          }
         }
       })
     }
