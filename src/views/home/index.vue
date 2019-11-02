@@ -4,7 +4,7 @@
       <!-- logo -->
       <div class="logo" :class="{smallLogo:!isOpen}"></div>
       <el-menu
-        default-active="/"
+        :default-active="$router.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
