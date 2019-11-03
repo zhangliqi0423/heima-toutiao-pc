@@ -121,7 +121,7 @@ export default {
     }
   },
   created () {
-    this.getChannelOptions()
+    // this.getChannelOptions()
     this.getArticles()
   },
   methods: {
