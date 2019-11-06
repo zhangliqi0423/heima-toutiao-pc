@@ -9,6 +9,7 @@ import Article from '@/views/article'
 import local from '@/utils/local'
 import Image from '@/views/image'
 import Publish from '@/views/publish'
+import Comment from '@/views/comment'
 
 Vue.use(VueRouter)
 
@@ -27,7 +28,10 @@ const router = new VueRouter({
         { path: '/article', component: Article },
         // 素材
         { path: '/image', component: Image },
-        { path: '/publish', component: Publish }
+        // 发布文章
+        { path: '/publish', component: Publish },
+        // 评论管理
+        { path: '/comment', component: Comment }
       ]
     },
     //  404处理

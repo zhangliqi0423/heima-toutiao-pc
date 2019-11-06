@@ -147,6 +147,7 @@ export default {
       // 总条数数据赋值
       this.total = data.total_count
     },
+    // 分页函数
     pager (newPage) {
       // 修改当前页码为当前页码
       this.reqParams = newPage
